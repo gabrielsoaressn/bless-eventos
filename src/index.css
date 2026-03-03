@@ -2,14 +2,34 @@
 
 @theme {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --color-primary: #6366f1;
-  --color-primary-dark: #4f46e5;
-  --color-sidebar: #0f172a;
-  --color-sidebar-hover: #1e293b;
+  --color-primary: #c9a84c;
+  --color-primary-dark: #b8943f;
+  --color-primary-light: #e8d5a0;
+  --color-gold: #c9a84c;
+  --color-gold-dark: #a8872e;
+  --color-gold-light: #f5ecd4;
+  --color-sidebar: #0c0f1a;
+  --color-sidebar-hover: #1a1e2e;
+  --color-dark: #111318;
+  --color-dark-card: #1a1d28;
+  --color-dark-border: #2a2d3a;
+  --color-dark-surface: #22252f;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: #f1f5f9;
+  background-color: #111318;
+  color: #e2e8f0;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #1a1d28;
+}
+::-webkit-scrollbar-thumb {
+  background: #3a3d4a;
+  border-radius: 3px;
 }

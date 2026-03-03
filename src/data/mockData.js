@@ -74,12 +74,27 @@ export const contratos = [
 ]
 
 export const forecastData = [
-  { mes: 'Mar/26', valor: 28500 },
-  { mes: 'Abr/26', valor: 15200 },
-  { mes: 'Mai/26', valor: 12800 },
-  { mes: 'Jun/26', valor: 19400 },
-  { mes: 'Jul/26', valor: 31000 },
-  { mes: 'Ago/26', valor: 24600 },
+  { mes: 'Mar/26', recebivel: 28500, realizado: 26200 },
+  { mes: 'Abr/26', recebivel: 15200, realizado: null },
+  { mes: 'Mai/26', recebivel: 12800, realizado: null },
+  { mes: 'Jun/26', recebivel: 19400, realizado: null },
+  { mes: 'Jul/26', recebivel: 31000, realizado: null },
+  { mes: 'Ago/26', recebivel: 24600, realizado: null },
+]
+
+export const funilVendas = [
+  { etapa: 'Leads Recebidos', valor: 120, fill: '#c9a84c' },
+  { etapa: 'Orçamentos Emitidos', valor: 45, fill: '#a8872e' },
+  { etapa: 'Contratos Fechados', valor: 18, fill: '#8b6f1e' },
+]
+
+export const adocaoServicos = [
+  { servico: 'Estrutura Completa', percentual: 100 },
+  { servico: 'Buffet', percentual: 94 },
+  { servico: 'Bolo Fake', percentual: 85 },
+  { servico: 'Bolo de Corte', percentual: 72 },
+  { servico: 'Barman', percentual: 40 },
+  { servico: 'DJ', percentual: 30 },
 ]
 
 export const pacoteItens = [
@@ -91,10 +106,15 @@ export const pacoteItens = [
   { id: 'bolo_fake', nome: 'Bolo Fake', valor: 600, descricao: 'Bolo cenográfico decorativo' },
 ]
 
-export const dashboardCards = {
-  receitaMes: 105200,
-  inadimplencia: 8.3,
-  ticketMedio: 13150,
+export const kpis = {
+  ticketMedio: { valor: 14250, delta: '+8%', periodo: 'vs último trimestre' },
+  ocupacao: { valor: 68, label: 'da agenda 2026 preenchida' },
+  inadimplencia: { valor: 4.2, status: 'Controlado' },
 }
 
-export const insightIA = "Insight: 40% dos contratos recentes removeram os itens 'DJ' e 'Barman'. Considere criar um pacote base mais enxuto para aumentar a margem."
+export const insightIA = {
+  titulo: 'Insight Operacional',
+  mensagem: 'Notamos que 70% dos contratos recentes excluíram o serviço de DJ. Sugerimos criar um pacote \'Smart\' sem DJ e Barman embutidos, oferecendo-os como upsell para melhorar a taxa de conversão.',
+  confianca: 87,
+  baseAnalise: '42 contratos analisados nos últimos 90 dias',
+}
