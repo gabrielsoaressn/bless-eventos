@@ -8,9 +8,8 @@ function formatCurrency(value) {
 function StatusBadge({ status }) {
   const styles = {
     'Quitado': 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
-    'Contrato Fechado': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-    'Sinal Pago, Parcelas Pendentes': 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-    'Sinal Pendente': 'bg-red-500/10 text-red-400 border-red-500/20',
+    'Em dia': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
+    'Atrasado': 'bg-red-500/10 text-red-400 border-red-500/20',
   }
 
   return (
@@ -20,13 +19,45 @@ function StatusBadge({ status }) {
   )
 }
 
+function ParcelasBar({ pagas, total }) {
+  const pct = total > 0 ? (pagas / total) * 100 : 0
+  const restantes = total - pagas
+
+  return (
+    <div className="flex items-center gap-3 min-w-[160px]">
+      <div className="flex-1">
+        <div className="w-full bg-dark-border rounded-full h-1.5">
+          <div
+            className={`h-1.5 rounded-full transition-all ${pct === 100 ? 'bg-emerald-400' : 'bg-gold'}`}
+            style={{ width: `${pct}%` }}
+          />
+        </div>
+      </div>
+      <span className="text-xs text-slate-400 whitespace-nowrap font-medium">
+        <span className="text-slate-200">{pagas}</span>/{total}
+        {restantes > 0 && (
+          <span className="text-slate-500 ml-1">({restantes} restante{restantes > 1 ? 's' : ''})</span>
+        )}
+      </span>
+    </div>
+  )
+}
+
 export default function Contratos() {
+  const totalRecebiveis = contratos.reduce((sum, c) => {
+    const restantes = c.parcelasTotal - c.parcelasPagas
+    const valorParcela = c.parcelasTotal > 0 ? c.valor / c.parcelasTotal : 0
+    return sum + (restantes * valorParcela)
+  }, 0)
+
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 className="text-2xl font-bold text-white">Contratos</h2>
-          <p className="text-slate-500 text-sm mt-1">{contratos.length} contratos cadastrados</p>
+          <p className="text-slate-500 text-sm mt-1">
+            {contratos.length} contratos &middot; Recebiveis pendentes: <span className="text-gold font-semibold">{formatCurrency(totalRecebiveis)}</span>
+          </p>
         </div>
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -49,10 +80,9 @@ export default function Contratos() {
           <thead>
             <tr className="border-b border-dark-border bg-dark-surface/50">
               <th className="text-left px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Cliente</th>
-              <th className="text-left px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Tipo</th>
-              <th className="text-left px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Data</th>
-              <th className="text-center px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Convidados</th>
-              <th className="text-right px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Valor</th>
+              <th className="text-left px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Data do Evento</th>
+              <th className="text-right px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Valor Total</th>
+              <th className="text-left px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Parcelas</th>
               <th className="text-left px-6 py-3.5 text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
             </tr>
           </thead>
@@ -61,18 +91,16 @@ export default function Contratos() {
               <tr key={c.id} className="border-b border-dark-border/50 hover:bg-dark-surface/30 transition-colors">
                 <td className="px-6 py-4">
                   <p className="text-sm font-medium text-slate-200">{c.cliente}</p>
-                </td>
-                <td className="px-6 py-4">
-                  <p className="text-sm text-slate-400">{c.tipo}</p>
+                  <p className="text-xs text-slate-500">{c.tipo}</p>
                 </td>
                 <td className="px-6 py-4">
                   <p className="text-sm text-slate-400">{c.data}</p>
                 </td>
-                <td className="px-6 py-4 text-center">
-                  <p className="text-sm text-slate-400">{c.convidados}</p>
-                </td>
                 <td className="px-6 py-4 text-right">
                   <p className="text-sm font-medium text-gold">{formatCurrency(c.valor)}</p>
+                </td>
+                <td className="px-6 py-4">
+                  <ParcelasBar pagas={c.parcelasPagas} total={c.parcelasTotal} />
                 </td>
                 <td className="px-6 py-4">
                   <StatusBadge status={c.status} />
